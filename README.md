@@ -7,32 +7,115 @@
 
 ---
 
-## 📌 Executive Summary
-This repository contains the complete research deliverable for the **DSC212 Graph Theory Module Assignment: Modularity on the Karate Club Graph**.
+## 👤 Student & Submission Details
 
-The primary deliverable is an **IPython/Jupyter notebook ([`Karate_Club_Modularity.ipynb`](Karate_Club_Modularity.ipynb))** that runs top-to-bottom without manual edits, containing full mathematical proofs, an unweighted spectral modularity implementation from scratch, high-resolution graph visualizations across all recursive bisection iterations, and comprehensive tracking and analysis of standard network centrality metrics (**Degree Centrality**, **Betweenness Centrality**, **Closeness Centrality**, and **Clustering Coefficient**).
+| **Field** | **Information** |
+|:---|:---|
+| **Student Name** | **Rudrapratap Hemant Baandal** |
+| **Roll Number** | **IMS25178** |
+| **Course** | DSC212: Graph Theory Module |
+| **Assignment Topic** | Modularity on the Karate Club Graph (Spectral Community Detection) |
+| **Submission Mode** | Jupyter Notebook (`.ipynb`) with top-to-bottom reproducible outputs & GitHub Repository |
+| **Benchmark Dataset** | Zachary's Karate Club ($n = 34$ nodes, $m = 78$ edges) |
+
+---
+
+## 📌 Project Overview & Brief
+
+This research project presents an end-to-end investigation, from-scratch algorithmic implementation, and empirical analysis of **modularity-based community detection** using **recursive spectral bisection** on the classic **Zachary Karate Club network** ($n = 34$, $m = 78$).
+
+### Key Objectives & Deliverables
+1. **Mathematical Derivation & Proofs:** Full mathematical treatment of the modularity matrix $B = A - \frac{\mathbf{k}\mathbf{k}^T}{2m}$, including formal proofs for:
+   - Reality and symmetry of $B$ ($B = B^T$).
+   - Spectral Theorem properties (real eigenvalues and orthogonal eigenbasis).
+   - Zero eigenvalue property ($B\mathbf{1} = \mathbf{0}$) and zero modularity for the trivial partition ($Q = 0$).
+   - Rayleigh-Ritz theorem justifying continuous relaxation and leading eigenvector maximization.
+   - Theorem 3: Subgraph restriction $B^{(C)} = B[C, C]$ and the strict eigenvalue stopping criterion $\lambda_1^{(C)} \le 0 \implies \Delta Q \le 0$.
+2. **From-Scratch Implementation:** Implementation of unweighted modularity and recursive spectral bisection using only standard scientific Python libraries (`numpy`, `scipy`, `networkx`).
+3. **Step-by-Step Graph Visualizations:** Progressive visualization of the karate club network at each split iteration on a **fixed spring layout** (nodes remain at fixed coordinates), with distinct community colors and labeled node IDs.
+4. **Dynamic Topological Metric Tracking:** NetworkX computation and tracking of four fundamental metrics after each split across the entire 34-node population:
+   - **Degree Centrality ($C_D$)**
+   - **Betweenness Centrality ($C_B$)**
+   - **Closeness Centrality ($C_C$)**
+   - **Clustering Coefficient ($C$)**
+5. **In-Depth Analytical Discussion:** Detailed answers to core assignment questions:
+   - Identification of persistently central nodes across splits (Node 0 - Mr. Hi, Node 33 - Officer, and their lieutenants Node 2 & Node 32).
+   - Analysis of structural changes driving metric shifts (betweenness collapse for boundary spanners, clustering peaks in local cliques).
+   - Evaluation against Zachary's empirical anthropological ground truth (**97.1% accuracy**).
+
+---
+
+## 🔄 Algorithmic Pipeline
+
+```
+                                  [ Zachary Karate Club Network ]
+                                      (n = 34 nodes, m = 78 edges)
+                                                    │
+                                                    ▼
+                             [ Unweighted 0-1 Adjacency Matrix A ]
+                                                    │
+                                                    ▼
+                          [ Global Modularity Matrix B = A - k k^T / 2m ]
+                                 (Verified: B = B^T, B * 1 = 0)
+                                                    │
+                   ┌────────────────────────────────┴────────────────────────────────┐
+                   ▼                                                                 ▼
+      [ Theoretical Proofs ]                                      [ Recursive Spectral Bisection ]
+    • Reality & Symmetry                                           Candidate Communities Queue
+    • Orthonormal Basis                                                              │
+    • Rayleigh-Ritz Relaxation                                                       ▼
+    • Eigenvalue Stopping Criterion                             Extract Submatrix B^(C) = B[C, C]
+                                                                                     │
+                                                                                     ▼
+                                                                     Compute Leading Eigenpair (λ1, u1)
+                                                                                     │
+                                                                 ┌───────────────────┴───────────────────┐
+                                                                 ▼                                       ▼
+                                                          λ1 > 0 & ΔQ > 0                         λ1 <= 0 or trivial
+                                                       (Bipartition via sign(u1))                 (Group is Indivisible)
+                                                                 │                                       │
+                                                                 ▼                                       ▼
+                                                      [ Accept Split & Recurse ]                    [ Stop Split ]
+                                                                 │                                       │
+                   ┌─────────────────────────────────────────────┴───────────────────────────────────────┘
+                   ▼
+         [ Iteration Snapshots ]
+    (Iteration 0 -> 1 -> 2 -> 3 -> 4)
+                   │
+         ┌─────────┴─────────┐
+         ▼                   ▼
+[ Graph Visualizations ]  [ Centrality & Metric Analysis ]
+• Fixed Spring Layout     • Degree Centrality (C_D)
+• Distinct Color Coding   • Betweenness Centrality (C_B)
+• Ground Truth Validation • Closeness Centrality (C_C)
+                          • Clustering Coefficient (C)
+                          • Metric Evolution Trajectories
+                          • Comprehensive 34-Node Heatmaps
+```
 
 ---
 
 ## 🥋 1. Background: The Karate Club Story
-In the early 1970s, anthropologist **Wayne W. Zachary** spent two years observing the social interactions among 34 members of a university karate club. Each member is represented as a node, and an edge indicates friendship and regular interaction outside of formal martial arts training.
+In the early 1970s, anthropologist **Wayne W. Zachary** observed the social interactions among 34 members of a university karate club over a two-year period (1970–1972). Nodes represent members, and edges represent friendship and shared activities outside formal karate classes.
 
-During the study, a political schism erupted between the club's instructor (**Mr. Hi**, node 0) and the administrator (**John A / Club President**, node 33) over instructor compensation and membership dues. The dispute escalated until the club fractured into two distinct rival factions.
+During the study, an escalating conflict arose between the martial arts instructor (**Mr. Hi**, node 0) and the club administrator (**John A / Officer**, node 33) over whether club revenues should fund instructor salaries or new equipment. The dispute eventually split the club into two rival factions:
+- **Mr. Hi's Faction:** Followers of the instructor who departed to found a new studio.
+- **The President's Faction:** Members who remained with the administrator at the university.
 
-Because social interaction data were gathered *before* the formal split took place, Zachary's Karate Club ($n = 34$, $m = 78$) is the canonical benchmark for community detection: **Can an algorithm, operating strictly on graph topology, recover the latent sociological fault lines that split the group?**
+Because Zachary collected the interaction network *before* the schism took place, the Karate Club network ($n = 34$, $m = 78$) is the canonical benchmark for community detection: **Can an algorithm operating purely on graph topology uncover the latent social fault lines that fractured the club?**
 
 ---
 
 ## 📐 2. Mathematical Formulation & Supporting Proofs
 
 ### 2.1 The Modularity Quality Function
-While a naive **minimum cut** tends to trivial partitions (isolating single leaf vertices), **modularity ($Q$)** measures the density of intra-community links compared to a degree-preserving null model:
+While naive **minimum cut** partitioning frequently separates isolated leaf nodes (trivial solutions), **modularity ($Q$)** measures the density of intra-community links compared to a degree-preserving null model:
 
 $$B = A - \frac{\mathbf{k}\mathbf{k}^T}{2m}, \quad B_{ij} = A_{ij} - \frac{k_i k_j}{2m}$$
 
 where:
 - $A \in \{0, 1\}^{n \times n}$ is the unweighted adjacency matrix ($m = 78$).
-- $\mathbf{k} = (k_1, \dots, k_n)^T$ is the node degree vector ($\sum_i k_i = 2m$).
+- $\mathbf{k} = (k_1, \dots, k_n)^T$ is the node degree vector ($\sum_i k_i = 2m = 156$).
 - For a bipartition $\mathbf{s} \in \{-1, +1\}^n$, the modularity score is:
   $$Q = \frac{1}{4m} \mathbf{s}^T B \mathbf{s}$$
 
@@ -52,7 +135,7 @@ where:
 
 #### Proposition 2. $B\mathbf{1} = \mathbf{0}$ (Zero Eigenvalue)
 $$B\mathbf{1} = A\mathbf{1} - \frac{\mathbf{k}(\mathbf{k}^T\mathbf{1})}{2m} = \mathbf{k} - \frac{\mathbf{k}(2m)}{2m} = \mathbf{k} - \mathbf{k} = \mathbf{0}$$
-Thus, the all-ones vector $\mathbf{1}$ is an eigenvector with eigenvalue $\lambda = 0$. $\blacksquare$
+Thus, the all-ones vector $\mathbf{1}$ is an eigenvector of $B$ associated with eigenvalue $\lambda = 0$. $\blacksquare$
 
 #### Corollary 1. Modularity of Trivial Partition is Zero
 $$Q = \frac{1}{4m}\mathbf{1}^T B \mathbf{1} = \frac{1}{4m}\mathbf{1}^T \mathbf{0} = 0 \quad \blacksquare$$
@@ -119,7 +202,7 @@ After each split, we evaluate the 4 required NetworkX metrics:
 ### 6.1 Which Nodes Consistently Remain Central Across Splits?
 - **Node 0 (Mr. Hi - Instructor)** and **Node 33 (John A / Officer - President)** remain the undisputed hubs throughout all iterations:
   - In Iteration 0, they possess the highest initial degrees ($k_0 = 16$, $k_{33} = 17$).
-  - Even after inter-faction edges dissolve, Node 0 preserves an internal degree of 10 and Node 33 preserves an internal degree of 14 within their respective primary factions.
+  - Even after inter-faction edges dissolve, Node 0 preserves an internal degree of 10 and Node 33 preserves an internal degree of 14 within their respective primary factions. Throughout all iterations, they remain the dominant hubs of their respective communities.
 - **Persistent Factional Lieutenants (Node 2 and Node 32):**
   - Node 2 is the primary lieutenant to Mr. Hi, maintaining the second-highest internal degree and shortest path density within the instructor's faction.
   - Node 32 serves as the primary lieutenant to the Club President, consistently anchoring the secondary hub of the administrator's faction.
@@ -136,25 +219,20 @@ After each split, we evaluate the 4 required NetworkX metrics:
 
 ---
 
-## 💻 7. How to Run the Notebook
+## 💻 7. Verification & Reproducibility
 
-### Prerequisites
+### Environment & Dependencies
 - Python 3.10+
-- `numpy`, `scipy`, `pandas`, `matplotlib`, `networkx`, `nbformat`, `nbclient`
+- `numpy>=1.24`
+- `scipy>=1.10`
+- `networkx>=3.0`
+- `matplotlib>=3.7`
+- `pandas>=2.0`
+- `nbformat>=5.9`
+- `nbclient>=0.8`
 
-### Installation
-```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
-pip install numpy scipy pandas matplotlib networkx nbformat nbclient
-```
-
-### Running Top-to-Bottom
-Open the notebook in Jupyter Lab or VS Code and execute all cells:
-```bash
-jupyter lab Karate_Club_Modularity.ipynb
-```
-Or run headless via command line:
+### Top-to-Bottom Execution Test
+To verify top-to-bottom execution without manual intervention:
 ```bash
 python -m nbconvert --to notebook --execute Karate_Club_Modularity.ipynb --output Karate_Club_Modularity.ipynb
 ```
