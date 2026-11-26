@@ -20,6 +20,12 @@
 
 ---
 
+### ✍️ Authorship & Academic Honesty Declaration
+> *"I can proudly say that most of this assignment was written by me personally. I have however, used AI, and in doing so I have tried to use it in places that will not hinder my learning. I have used it to debug visual errors in matplotlib plots and also for general info on some concepts."*  
+> — **Rudrapratap Hemant Baandal (IMS25178)**
+
+---
+
 ## 📌 Project Overview & Brief
 
 This research project presents an end-to-end investigation, from-scratch algorithmic implementation, and empirical analysis of **modularity-based community detection** using **recursive spectral bisection** on the classic **Zachary Karate Club network** ($n = 34$, $m = 78$).
