@@ -135,8 +135,8 @@ where:
   $$B^T = A^T - \frac{(\mathbf{k}\mathbf{k}^T)^T}{2m} = A - \frac{\mathbf{k}\mathbf{k}^T}{2m} = B \quad \blacksquare$$
 
 #### Theorem 1. Real Eigenvalues & Orthonormal Eigenbasis
-- For any complex eigenpair $(\lambda, \mathbf{v})$ with $\mathbf{v} \ne \mathbf{0}$, $\mathbf{v}^* B \mathbf{v} = \lambda \|\mathbf{v}\|_2^2$.
-- Since $B = B^T = B^*$, $(\mathbf{v}^* B \mathbf{v})^* = \mathbf{v}^* B \mathbf{v} \in \mathbb{R}$. Because $\|\mathbf{v}\|_2^2 > 0$ is real, $\lambda \in \mathbb{R}$.
+- For any complex eigenpair $(\lambda, \mathbf{v})$ with $\mathbf{v} \ne \mathbf{0}$, $\mathbf{v}^\ast B \mathbf{v} = \lambda \|\mathbf{v}\|_2^2$.
+- Since $B = B^T = B^\ast\ast$, $(\mathbf{v}^\ast B \mathbf{v})^* = \mathbf{v}^\ast B \mathbf{v} \in \mathbb{R}$. Because $\|\mathbf{v}\|_2^2 > 0$ is real, $\lambda \in \mathbb{R}$.
 - By the Spectral Theorem, distinct eigenspaces are orthogonal, providing an orthonormal basis for $\mathbb{R}^n$. $\blacksquare$
 
 #### Proposition 2. $B\mathbf{1} = \mathbf{0}$ (Zero Eigenvalue)
@@ -147,7 +147,7 @@ Thus, the all-ones vector $\mathbf{1}$ is an eigenvector of $B$ associated with 
 $$Q = \frac{1}{4m}\mathbf{1}^T B \mathbf{1} = \frac{1}{4m}\mathbf{1}^T \mathbf{0} = 0 \quad \blacksquare$$
 
 #### Theorem 2. Rayleigh-Ritz Characterization
-Relaxing $s_i \in \{-1, +1\}$ to $\|\mathbf{s}\|_2 = 1$, the continuous quadratic form $\max_{\|\mathbf{s}\|_2=1} \mathbf{s}^T B \mathbf{s} = \lambda_1$, attained at the leading eigenvector $\mathbf{u}_1$. Rounding by sign produces the discrete bipartition:
+Relaxing $s_i \in \{-1, +1\}$ to $\Vert \mathbf{s} \Vert_2 = 1$, the continuous quadratic form $\max_{\|\mathbf{s}\|_2=1} \mathbf{s}^T B \mathbf{s} = \lambda_1$, attained at the leading eigenvector $\mathbf{u}_1$. Rounding by sign produces the discrete bipartition:
 $$s_i = \begin{cases} +1 & \text{if } (\mathbf{u}_1)_i > 0 \\ -1 & \text{otherwise} \end{cases} \quad \blacksquare$$
 
 #### Theorem 3. Subgraph Restriction & Eigenvalue Stopping Criterion
