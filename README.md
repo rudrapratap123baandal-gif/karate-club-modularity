@@ -156,7 +156,7 @@ $$
 and the maximum is achieved by the leading eigenvector $\mathbf{s} = \mathbf{u}_1$. Rounding by sign produces the discrete bipartition:
 
 $$
-s_i = \begin{cases} +1 & \text{if } (\mathbf{u}_1)_i > 0 \\ -1 & \text{otherwise} \end{cases} \quad \blacksquare
+s_i = \begin{cases} +1 & \text{if } (\mathbf{u}_1)_i > 0 \\\\ -1 & \text{otherwise} \end{cases} \quad \blacksquare
 $$
 
 #### Theorem 3. Subgraph Restriction & Eigenvalue Stopping Criterion
