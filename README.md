@@ -147,8 +147,17 @@ Thus, the all-ones vector $\mathbf{1}$ is an eigenvector of $B$ associated with 
 $$Q = \frac{1}{4m}\mathbf{1}^T B \mathbf{1} = \frac{1}{4m}\mathbf{1}^T \mathbf{0} = 0 \quad \blacksquare$$
 
 #### Theorem 2. Rayleigh-Ritz Characterization
-Relaxing $s_i \in \{-1, +1\}$ to $\Vert \mathbf{s} \Vert_2 = 1$, the continuous quadratic form $\max_{\|\mathbf{s}\|_2=1} \mathbf{s}^T B \mathbf{s} = \lambda_1$, attained at the leading eigenvector $\mathbf{u}_1$. Rounding by sign produces the discrete bipartition:
-$$s_i = \begin{cases} +1 & \text{if } (\mathbf{u}_1)_i > 0 \\ -1 & \text{otherwise} \end{cases} \quad \blacksquare$$
+Relaxing $s_i \in \{-1, +1\}$ to $\|\mathbf{s}\|_2 = 1$, the continuous quadratic form $\max_{\|\mathbf{s}\|_2=1} \mathbf{s}^T B \mathbf{s} = \lambda_1$, attained at the leading eigenvector $\mathbf{u}_1$. Rounding by sign produces the discrete bipartition:
+$$
+
+
+s_i = \begin{cases} 
++1 & \text{if } (\mathbf{u}_1)_i > 0 \\
+-1 & \text{otherwise} 
+\end{cases} \quad \blacksquare
+
+
+$$
 
 #### Theorem 3. Subgraph Restriction & Eigenvalue Stopping Criterion
 For a candidate community $C \subseteq V$, the restricted modularity submatrix is $B^{(C)} = B[C, C]$. The modularity gain from splitting $C$ via $\mathbf{s} \in \{-1, +1\}^{|C|}$ is:
